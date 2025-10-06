@@ -101,6 +101,7 @@ ros2 launch makimate_bringup bringup.launch.py
 
 ```
 MakiMate/
+<<<<<<< HEAD
 ├── src/                  # Source packages (e.g. makimate_bringup)
 │   └── makimate_bringup/
 │       ├── launch/
@@ -121,6 +122,33 @@ MakiMate/
 │
 ├── README.md             # Project overview
 └── LICENSE
+=======
+├── LICENSE                     # Project license file
+├── README.md                   # Project overview and introduction
+├── deploy                      # Deployment-related scripts or configurations
+├── docker/                     # Docker-related files for containerized builds
+│   ├── base/                   # Base Docker image configurations
+│   │   └── Dockerfile          # Dockerfile for the base image
+│   └── robot/                  # Robot-specific Docker configurations
+│       ├── Dockerfile          # Main Dockerfile for the robot environment
+│       └── entrypoint.sh       # Entrypoint script for the robot container
+├── docs/                       # Documentation files
+│   └── SETUP.md                # Setup guide for the project
+├── hw/                         # Hardware-related code
+├── interfaces/                 # ROS 2 interfaces (msg, srv, etc.)
+└── src/                        # Source code for ROS 2 packages
+    └── makimate_bringup/       # Main ROS 2 package for MakiMate
+        ├── launch/             # Launch files for ROS 2 nodes
+        │   └── bringup.launch.py  # Main launch file for starting nodes
+        ├── makimate_bringup/   # Python package directory
+        │   ├── __init__.py     # Python package initialization
+        │   └── hello.py        # Example ROS 2 node script
+        ├── package.xml         # ROS 2 package manifest
+        ├── resource/           # Resource files for the package
+        │   └── makimate_bringup  # Resource directory for makimate_bringup
+        ├── setup.cfg           # Configuration for Python package
+        └── setup.py            # Build script for the ROS 2 package
+>>>>>>> origin/main
 ```
 
 ## 🪄 6. Common Commands
@@ -177,5 +205,10 @@ When you push code to GitHub, it’s automatically shareable and portable — ou
 
 ## 🫶 9. Need Help?
 
+<<<<<<< HEAD
 If something doesn’t work or seems confusing, open a thread in the #dev-setup channel on Discord or tag @pourya.  
 We’ll help you troubleshoot!
+=======
+If something doesn’t work or seems confusing, reach out to Pourya on Discord @pourya9698 .
+We’ll help you troubleshoot!
+>>>>>>> origin/main
