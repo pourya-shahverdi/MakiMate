@@ -1,9 +1,13 @@
-# MakiMate
+# 🤖 MakiMate
 
-ROS 2 Jazzy codebase for the MAKI robot — Dockerized and ready for multi-arch (PC amd64 & Raspberry Pi 5 arm64) with CI/CD.
+**MakiMate** is a ROS 2–based software environment for developing and deploying behaviors and functions for the Maki robot.  
+It’s built for collaboration — a consistent, containerized workspace that runs identically on development machines and on the robot (Raspberry Pi 5).
 
-## Quick start (local)
+---
+
+## 🚀 Quick Start
+
+### 1️⃣ Clone the Repository
 ```bash
-docker build -t makimate:dev docker/robot
-docker run --rm -it makimate:dev
-
+git clone https://github.com/pourya-shahverdi/MakiMate.git
+cd MakiMate
