@@ -22,38 +22,76 @@ MakiMate uses:
 ## 🐧 Linux Setup (One-Time)
 
 ### 1️⃣ Install Docker
-1. Remove old Docker versions:
+1. Remove Old Docker Versions:
    ```bash
-   sudo apt remove docker docker-engine docker.io containerd runc
-   ```
-2. Install Docker:
+   sudo apt remove -y docker docker-engine docker.io containerd runc docker-compose-plugin
+   sudo snap remove docker 2>/dev/null || true   ```
+2. Install Prerequisites and Add Docker Repository:
    ```bash
    sudo apt update
    sudo apt install -y ca-certificates curl gnupg
+
+   # Create the keyrings directory if it doesn't exist
    sudo install -m 0755 -d /etc/apt/keyrings
-   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-   echo \
-     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
-     https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+   # Add Docker’s GPG key (correct path and permissions)
+   curl -fsSL https://download.docker.com/linux/ubuntu/gpg   | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+   sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+   # Add the Docker APT repository (Jammy=22.04, Noble=24.04)
+   echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
    sudo apt update
+   ```
+3. Install Docker Engine and Plugins:
+   ```bash
    sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
    ```
-3. Add your user to the Docker group:
+4. Enable and Start Docker:
    ```bash
+   sudo systemctl enable --now docker
    sudo usermod -aG docker $USER
-   newgrp docker
+   newgrp docker    # refresh group membership in the current shell
    ```
-4. Verify Docker and Buildx:
+5. Verify Installation:
    ```bash
    docker run hello-world
    docker buildx version
    ```
-   If Buildx is missing:
-   ```bash
-   docker buildx create --name mybuilder --use
-   docker buildx inspect --bootstrap
-   ```
+*If Buildx is missing, initialize it manually:
+```bash
+docker buildx create --name mybuilder --use
+docker buildx inspect --bootstrap
+```
+### ⚙️ Troubleshooting
+
+#### 🔹 GPG Key Error (NO_PUBKEY / InRelease not signed)
+```bash
+ls -l /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+sudo apt update
+```
+
+#### 🔹 “No Installation Candidate” for docker-ce
+Check that the repository entry matches your Ubuntu version:
+```bash
+cat /etc/apt/sources.list.d/docker.list
+apt-cache policy docker-ce | sed -n '1,120p'
+```
+
+#### 🔹 Permission Denied for /var/run/docker.sock
+```bash
+groups          # should include 'docker'
+newgrp docker   # or log out and back in
+sudo systemctl status docker --no-pager
+```
+
+#### 🔹 Raspberry Pi (ARM64) Tip
+Ensure you build and run ARM64 images:
+```bash
+docker run --platform=linux/arm64 -it alpine uname -m   # should print: aarch64
+docker buildx build --platform=linux/arm64 -t your/image:tag .
+```
 
 ### 2️⃣ Install Git and Basic Packages
 ```bash
